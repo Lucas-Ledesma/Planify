@@ -32,11 +32,19 @@ export const Navbar = () => {
 							Logout
 						</Button>
 					)}
-					<Button size='sm' asChild>
-						<Link href='/sign-up'>
+					{!data ? (
+						<Button
+							size='sm'
+							onClick={() => signIn('google')}>
 							Get Taskify for free
-						</Link>
-					</Button>
+						</Button>
+					) : (
+						<Button size='sm' asChild>
+							<Link href={'/organization'}>
+								Go to Planify
+							</Link>
+						</Button>
+					)}
 				</div>
 			</div>
 		</div>

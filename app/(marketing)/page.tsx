@@ -53,9 +53,6 @@ const MarketingPage = () => {
 				office, the way your team works is unique -
 				accomplish it all with Planify.
 			</div>
-			<Button className='mt-6' size='lg' asChild>
-				<Link href='/sign-up'>Get Planify for free</Link>
-			</Button>
 		</div>
 	)
 }
