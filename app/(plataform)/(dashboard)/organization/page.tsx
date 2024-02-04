@@ -1,10 +1,10 @@
 import getOrgByOwner from '@/actions/getOrgsByOwner'
 import getUserByEmail from '@/actions/getUserByEmail'
-import { getServerSession } from 'next-auth'
 import OrgCard from '../_components/orgCard'
+import { auth } from '@/auth'
 
 const OrgPage = async () => {
-	const session = await getServerSession()
+	const session = await auth()
 	const user = await getUserByEmail(session?.user?.email!)
 	const orgs = await getOrgByOwner(user.id)
 

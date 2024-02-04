@@ -20,6 +20,10 @@ import CardWrapper from '@/components/auth/cardWrapper'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
 import { Button } from '../ui/button'
+import getUserByEmail from '@/actions/getUserByEmail'
+import loginUser from '@/actions/loginUser'
+import { signIn } from 'next-auth/react'
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
 
 export const LoginForm = () => {
 	const searchParams = useSearchParams()
@@ -48,23 +52,36 @@ export const LoginForm = () => {
 		setError('')
 		setSuccess('')
 
-		console.log('aaaa')
+		startTransition(async () => {
+			try {
+				const { email, password } = values
 
-		// startTransition(() => {
-		// 	login(values, callbackUrl)
-		// 		.then((data) => {
-		// 			if (data?.error) {
-		// 				form.reset()
-		// 				setError(data.error)
-		// 			}
+				const validatedFields =
+					LoginSchema.safeParse(values)
 
-		// 			if (data?.success) {
-		// 				form.reset()
-		// 				setSuccess(data.success)
-		// 			}
-		// 		})
-		// 		.catch(() => setError('Something went wrong'))
-		// })
+				if (!validatedFields.success) {
+					setError('Invalid fields!')
+					return
+				}
+
+				await signIn('credentials', {
+					email,
+					password,
+					redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+				})
+
+				setSuccess('login succesfully')
+			} catch (error: any) {
+				console.log(error)
+
+				if (error.response.data.msg) {
+					setError(error.response.data.msg)
+					return
+				}
+
+				alert(error)
+			}
+		})
 	}
 
 	return (

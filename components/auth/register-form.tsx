@@ -19,6 +19,7 @@ import CardWrapper from '@/components/auth/cardWrapper'
 import { Button } from '@/components/ui/button'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
+import createUser from '@/actions/createUser'
 
 export const RegisterForm = () => {
 	const [error, setError] = useState<string | undefined>('')
@@ -41,20 +42,25 @@ export const RegisterForm = () => {
 	) => {
 		setError('')
 		setSuccess('')
-
-		// startTransition(() => {
-		// 	register(values).then((data) => {
-		// 		setError(data.error)
-		// 		setSuccess(data.success)
-		// 	})
-		// })
+		startTransition(async () => {
+			try {
+				const user = await createUser(values)
+				console.log(user)
+			} catch (error: any) {
+				if (error.response.data.msg) {
+					setError(error.response.data.msg)
+					return
+				}
+				alert(error)
+			}
+		})
 	}
 
 	return (
 		<CardWrapper
 			headerLabel='Create an account'
 			backButtonLabel='Already have an account?'
-			backButtonHref='/auth/login'
+			backButtonHref='/login'
 			showSocial>
 			<Form {...form}>
 				<form
