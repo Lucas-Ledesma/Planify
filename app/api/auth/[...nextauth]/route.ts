@@ -2,6 +2,8 @@ import axios from 'axios'
 import NextAuth from 'next-auth/next'
 import GoogleProvider from 'next-auth/providers/google'
 
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/user`
+
 const handler = NextAuth({
 	providers: [
 		GoogleProvider({
@@ -12,7 +14,7 @@ const handler = NextAuth({
 	],
 	callbacks: {
 		async signIn({ user }) {
-			await axios.post('http://localhost:4000/user', user)
+			await axios.post(URL, user)
 
 			return true
 		},

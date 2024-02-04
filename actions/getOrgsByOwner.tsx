@@ -1,7 +1,7 @@
 import { Org } from '@/type'
 import axios from 'axios'
 
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/organization`
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/organization/user`
 
 const getOrgByOwner = async (
 	ownerId: string

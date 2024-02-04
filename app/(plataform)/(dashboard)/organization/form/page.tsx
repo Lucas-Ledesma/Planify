@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
