@@ -1,11 +1,22 @@
 import { NextAuthConfig } from 'next-auth'
+import Google from 'next-auth/providers/google'
+import GitHub from 'next-auth/providers/github'
 import Credential from 'next-auth/providers/credentials'
 import { LoginSchema } from './schemas'
 import getUserByEmail from './actions/getUserByEmail'
 import bcrypt from 'bcryptjs'
 
 export default {
+	trustHost: true,
 	providers: [
+		Google({
+			clientId: process.env.GOOGLE_CLIENT_ID,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+		}),
+		GitHub({
+			clientId: process.env.GITHUB_CLIENT_ID,
+			clientSecret: process.env.GITHUB_CLIENT_SECRET,
+		}),
 		Credential({
 			async authorize(credentials) {
 				const validatedFields =
@@ -31,4 +42,5 @@ export default {
 			},
 		}),
 	],
+	session: { strategy: 'jwt' },
 } satisfies NextAuthConfig

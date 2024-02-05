@@ -2,7 +2,8 @@
 
 import React from 'react'
 import { Button } from './ui/button'
-import { signIn, signOut } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
+import Link from 'next/link'
 
 interface authButtonPorps {
 	looged: boolean
@@ -12,11 +13,8 @@ function AuthButton({ looged }: authButtonPorps) {
 	return (
 		<div>
 			{looged ? (
-				<Button
-					size='sm'
-					variant='outline'
-					onClick={() => signIn('google')}>
-					Login
+				<Button size='sm' variant='outline' asChild>
+					<Link href={'/login'}>Login</Link>
 				</Button>
 			) : (
 				<Button

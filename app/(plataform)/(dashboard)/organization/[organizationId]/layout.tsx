@@ -1,18 +1,14 @@
 import Navbar from '../../_components/navbar'
+import { Sidebar } from '../../_components/sidebar'
 
 const DashboardLayout = ({
 	children,
 	params,
 }: {
 	children: React.ReactNode
-	params: { organizationId: String }
+	params: { organizationId: string }
 }) => {
-	return (
-		<div className='h-full'>
-			<Navbar organizationId={params.organizationId} />
-			{children}
-		</div>
-	)
+	return <main>{children}</main>
 }
 
 export default DashboardLayout

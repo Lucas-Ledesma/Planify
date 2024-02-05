@@ -7,7 +7,6 @@ const getUserByEmail = async (
 	email: string
 ): Promise<User> => {
 	const res = await axios(`${URL}/?email=${email}`)
-	console.log('a')
 
 	return res.data
 }

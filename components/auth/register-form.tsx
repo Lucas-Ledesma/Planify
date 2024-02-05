@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button'
 import { FormError } from '@/components/form-error'
 import { FormSuccess } from '@/components/form-success'
 import createUser from '@/actions/createUser'
+import { redirect } from 'next/navigation'
 
 export const RegisterForm = () => {
 	const [error, setError] = useState<string | undefined>('')
@@ -44,8 +45,9 @@ export const RegisterForm = () => {
 		setSuccess('')
 		startTransition(async () => {
 			try {
-				const user = await createUser(values)
-				console.log(user)
+				createUser(values)
+				setSuccess('User created successfully')
+				redirect('/login')
 			} catch (error: any) {
 				if (error.response.data.msg) {
 					setError(error.response.data.msg)
