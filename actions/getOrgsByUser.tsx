@@ -3,12 +3,12 @@ import axios from 'axios'
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/organization/user`
 
-const getOrgByOwner = async (
-	ownerId: string
+const getOrgByUser = async (
+	userId: string | undefined
 ): Promise<Org[]> => {
-	const res = await axios(`${URL}/${ownerId}`)
+	const res = await axios(`${URL}/${userId}`)
 
 	return res.data
 }
 
-export default getOrgByOwner
+export default getOrgByUser

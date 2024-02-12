@@ -56,7 +56,7 @@ function OrgSwitcher({ orgs }: { orgs: Org[] }) {
 					</div>
 					{orgs.map((org) => {
 						return (
-							<div className='grid gap-2'>
+							<div key={org.id} className='grid gap-2'>
 								<Button
 									variant={'outline'}
 									onClick={() =>

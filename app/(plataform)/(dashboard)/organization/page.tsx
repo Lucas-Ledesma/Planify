@@ -1,4 +1,4 @@
-import getOrgByOwner from '@/actions/getOrgsByOwner'
+import getOrgByUser from '@/actions/getOrgsByUser'
 import OrgCard from '../_components/orgCard'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
@@ -8,9 +8,7 @@ const OrgPage = async () => {
 	if (!session || !session.user || !session.user.id) {
 		return redirect('/')
 	}
-
-	console.log(session.user.id)
-	const orgs = await getOrgByOwner(session.user.id)
+	const orgs = await getOrgByUser(session.user.id)
 
 	return (
 		<div className='h-full w-full relative bg-slate-100'>

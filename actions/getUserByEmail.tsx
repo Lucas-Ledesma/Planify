@@ -3,12 +3,14 @@ import axios from 'axios'
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/user`
 
-const getUserByEmail = async (
-	email: string
-): Promise<User> => {
-	const res = await axios(`${URL}/?email=${email}`)
+const getUserByEmail = async (email: string) => {
+	try {
+		const res = await axios(`${URL}/?email=${email}`)
 
-	return res.data
+		return res.data
+	} catch (error) {
+		return null
+	}
 }
 
 export default getUserByEmail

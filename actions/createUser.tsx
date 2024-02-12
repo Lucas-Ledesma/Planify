@@ -17,16 +17,23 @@ const createUser = async ({
 	password,
 	image,
 	providerId,
-}: UserProps): Promise<User> => {
-	const res = await axios.post(`${URL}`, {
-		email,
-		name,
-		password,
-		image,
-		providerId,
-	})
+}: UserProps) => {
+	try {
+		await axios.post(`${URL}`, {
+			email,
+			name,
+			password,
+			image,
+			providerId,
+		})
 
-	return res.data
+		return { success: 'User created successfully' }
+	} catch (error: any) {
+		if (error.response.data.msg) {
+			return { failure: 'Email already taken' }
+		}
+		return { failure: error }
+	}
 }
 
 export default createUser

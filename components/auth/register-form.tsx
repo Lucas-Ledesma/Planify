@@ -44,17 +44,14 @@ export const RegisterForm = () => {
 		setError('')
 		setSuccess('')
 		startTransition(async () => {
-			try {
-				createUser(values)
-				setSuccess('User created successfully')
+			const state = await createUser(values)
+
+			if (state.success) {
+				setSuccess(state.success)
 				redirect('/login')
-			} catch (error: any) {
-				if (error.response.data.msg) {
-					setError(error.response.data.msg)
-					return
-				}
-				alert(error)
 			}
+
+			setError(state.failure)
 		})
 	}
 

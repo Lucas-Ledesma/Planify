@@ -2,11 +2,12 @@ import { Logo } from '@/components/logo'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import OrgSwitcher from './orgSwitcher'
-import getOrgByOwner from '@/actions/getOrgsByOwner'
+import getOrgByUser from '@/actions/getOrgsByUser'
 import AuthButton from '@/components/authButton'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { MobileSidebar } from './mobile-sidebar'
 
 async function Navbar() {
 	const session = await auth()
@@ -14,10 +15,14 @@ async function Navbar() {
 		return redirect('/')
 	}
 
-	const orgs = await getOrgByOwner(session.user.id)
+	const orgs = await getOrgByUser(session.user.id)
 
 	return (
 		<nav className='fixed z-50 top-0 px-4 w-full h-14 border-b shadow-sm bg-white flex items-center'>
+			<MobileSidebar
+				organizations={orgs}
+				storageKey='t-mobile-sidebar-status'
+			/>
 			<div className='flex items-center gap-x-4'>
 				<div className='hidden md:flex'>
 					<Logo />
