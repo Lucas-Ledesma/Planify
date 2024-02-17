@@ -16,3 +16,9 @@ export const RegisterSchema = z.object({
 		.string()
 		.min(1, { message: 'Password is required' }),
 })
+
+export const InviteSchema = z.object({
+	email: z
+		.string()
+		.email({ message: 'Email is requiered' }),
+})

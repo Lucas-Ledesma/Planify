@@ -7,7 +7,6 @@ import getUserByEmail from './actions/getUserByEmail'
 import bcrypt from 'bcryptjs'
 
 export default {
-	trustHost: true,
 	providers: [
 		Google({
 			clientId: process.env.GOOGLE_CLIENT_ID,

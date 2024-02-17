@@ -8,6 +8,7 @@ import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { MobileSidebar } from './mobile-sidebar'
+import Notification from '@/components/notification'
 
 async function Navbar() {
 	const session = await auth()
@@ -27,6 +28,7 @@ async function Navbar() {
 				<div className='hidden md:flex'>
 					<Logo />
 				</div>
+
 				<Button
 					asChild
 					className='rounded-sm h-auto hidden md:block'>
@@ -42,6 +44,9 @@ async function Navbar() {
 				</Button>
 			</div>
 			<div className='ml-auto flex items-center gap-x-2'>
+				{session?.user?.id && (
+					<Notification id={session?.user?.id} />
+				)}
 				<OrgSwitcher orgs={orgs} />
 				<AuthButton looged={!session} />
 			</div>

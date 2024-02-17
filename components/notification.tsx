@@ -11,9 +11,9 @@ import { Separator } from './ui/separator'
 import getNoification from '@/actions/getNotification'
 import { useEffect, useState } from 'react'
 import { Notification } from '@/type'
-import axios from 'axios'
 import inviteUser from '@/actions/inviteUser'
 import deleteNotificarion from '@/actions/deleteNotification'
+import { useRouter } from 'next/navigation'
 
 const Notification = ({
 	id,
@@ -24,6 +24,7 @@ const Notification = ({
 	const [notifications, setNotification] = useState<
 		Notification[] | []
 	>([])
+	const router = useRouter()
 
 	useEffect(() => {
 		async function fetchData() {
@@ -39,14 +40,24 @@ const Notification = ({
 	}, [])
 
 	const onClick = async (
-		id: string,
 		action: string,
-		orgId?: string
+		notification: Notification
 	) => {
-		if (action === 'invite' && orgId) {
+		const { receiver, sender, organization } = notification
+		if (action === 'invite' && organization.id) {
 			try {
 				setIsLoading(true)
-				await inviteUser(id, orgId)
+				await inviteUser(
+					receiver.email,
+					organization.id,
+					sender.id
+				)
+				setNotification((prevNotifications) =>
+					prevNotifications.filter(
+						(notif) => notif.id !== notification.id
+					)
+				)
+				router.refresh()
 			} catch (error) {
 				console.log(error)
 			} finally {
@@ -56,7 +67,12 @@ const Notification = ({
 
 		try {
 			setIsLoading(true)
-			await deleteNotificarion(id)
+			await deleteNotificarion(notification.id)
+			setNotification((prevNotifications) =>
+				prevNotifications.filter(
+					(notif) => notif.id !== notification.id
+				)
+			)
 		} catch (error) {
 			console.log(error)
 		} finally {
@@ -71,7 +87,6 @@ const Notification = ({
 			<PopoverTrigger disabled={!haveNotification}>
 				<Button
 					variant={'ghost'}
-					disabled={!haveNotification}
 					size={'icon'}
 					className='relative'>
 					<Bell className='size-6 text-neutral-600' />
@@ -103,17 +118,13 @@ const Notification = ({
 										disabled={isLoading}
 										size={'sm'}
 										onClick={() =>
-											onClick(
-												notification.receiverId,
-												notification.organizationId,
-												'invite'
-											)
+											onClick('invite', notification)
 										}>
 										<Check className='size-3' />
 									</Button>
 									<Button
 										onClick={() =>
-											onClick(notification.id, 'delete')
+											onClick('delete', notification)
 										}
 										variant={'destructive'}
 										disabled={isLoading}
