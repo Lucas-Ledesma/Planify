@@ -22,7 +22,7 @@ const textFont = Poppins({
 	],
 })
 
-const MarketingPage = () => {
+const MarketingPage = async () => {
 	return (
 		<div className='flex items-center justify-center flex-col'>
 			<div
@@ -34,16 +34,18 @@ const MarketingPage = () => {
 					<Medal className='h-6 w-6 mr-2' />
 					Best task managment
 				</div>
-				<h1 className='text-3xl md:text-6xl text-center text-neutral-800 mb-6'>
+				<h1 className='text-3xl md:text-6xl text-center text-white mb-6'>
 					Planify gets the job done
 				</h1>
-				<div className='text-3xl md:text-6xl bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white px-4 p-2 rounded-md pb-4 w-fit'>
-					work efficient.
+				<div className='bg-primary-foreground  rounded-full text-center items-center'>
+					<div className='gradient-text text-3xl animate-gradient md:text-6xl text-transparent px-4 p-2 rounded-md w-fit'>
+						work efficient.
+					</div>
 				</div>
 			</div>
 			<div
 				className={cn(
-					'text-sm md:text-xl text-neutral-400 mt-4 max-w-xs md:max-w-2xl text-center mx-auto',
+					'text-sm md:text-xl text-neutral-300 mt-4 max-w-xs md:max-w-2xl text-center mx-auto',
 					textFont.className
 				)}>
 				Collaborate, manage projects, and reach new

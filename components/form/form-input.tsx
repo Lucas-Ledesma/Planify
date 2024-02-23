@@ -49,7 +49,7 @@ export const FormInput = forwardRef<
 					{label ? (
 						<Label
 							htmlFor={id}
-							className='text-sm font-semibold text-neutral-700'>
+							className='text-sm font-semibold text-neutral-200'>
 							{label}
 						</Label>
 					) : null}

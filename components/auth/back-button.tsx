@@ -16,7 +16,7 @@ export const BackButton = ({
 	return (
 		<Button
 			variant='link'
-			className='font-normal w-full text-black'
+			className='font-normal w-full '
 			size='sm'
 			asChild>
 			<Link href={href}>{label}</Link>

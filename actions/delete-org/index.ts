@@ -25,12 +25,10 @@ const handler = async (
 	let response
 
 	try {
-		const { data: deleteResponse } = await axios.delete(
-			`${URL}/${id}`
-		)
+		await axios.delete(`${URL}/${id}`)
 
 		const { data: allOrgs } = await axios(
-			`${URL}/user/${session.user.id}`
+			`${URL}?userId=${session.user.id}`
 		)
 
 		if (allOrgs.length === 0) {

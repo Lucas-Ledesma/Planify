@@ -24,9 +24,13 @@ const Notification = ({
 	const [notifications, setNotification] = useState<
 		Notification[] | []
 	>([])
+
+	const [isMounted, setIsMounted] = useState(false)
+
 	const router = useRouter()
 
 	useEffect(() => {
+		setIsMounted(true)
 		async function fetchData() {
 			try {
 				const notifications = await getNoification(id)
@@ -38,6 +42,10 @@ const Notification = ({
 
 		fetchData()
 	}, [])
+
+	if (!isMounted) {
+		return null
+	}
 
 	const onClick = async (
 		action: string,
@@ -97,7 +105,7 @@ const Notification = ({
 					)}
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className='w-full flex justify-center items-center'>
+			<PopoverContent className='w-full flex justify-center items-center bg-primary-foreground'>
 				<div>
 					<div className='flex flex-col gap-4'>
 						<div className='space-y-2'>

@@ -52,3 +52,38 @@ export interface Receiver {
 	email: string
 	image: string
 }
+
+export interface Board {
+	id: string
+	title: string
+	imageId: string
+	imageThumbUrl: string
+	imageFullUrl: string
+	imageUserName: string
+	imageLinkHTML: string
+	orgId: string
+	createdAt: Date
+	updatedAt: Date
+}
+
+export interface List {
+	id: string
+	title: string
+	order: number
+	boardId: string
+	board: Board
+	cards: Card[]
+	createdAt: string
+	updatedAt: string
+}
+
+export interface Card {
+	id: string
+	title: string
+	order: number
+	description: string
+	listId: string
+	list: List
+	createdAt: string
+	updatedAt: string
+}

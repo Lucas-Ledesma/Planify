@@ -52,6 +52,7 @@ export const LoginForm = () => {
 					<FormInput
 						label='Email'
 						id={'email'}
+						className='bg-neutral-800 focus-visible:outline-none focus-visible:ring-transparent'
 						placeholder='jhondoe@gmail.com'
 						required
 					/>
@@ -59,6 +60,7 @@ export const LoginForm = () => {
 					<FormInput
 						label='Password'
 						id={'password'}
+						className='bg-neutral-800 focus-visible:outline-none focus-visible:ring-transparent'
 						placeholder='******'
 						required
 						type='password'
@@ -66,7 +68,7 @@ export const LoginForm = () => {
 				</div>
 				<FormError message={error || urlError} />
 				<FormSuccess message={success} />
-				<FormSubmit className='w-full bg-black/80 hover:bg-black/60'>
+				<FormSubmit variant='outline' className='w-full '>
 					Login
 				</FormSubmit>
 			</form>

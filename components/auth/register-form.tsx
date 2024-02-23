@@ -74,6 +74,7 @@ export const RegisterForm = () => {
 									<FormLabel>Name</FormLabel>
 									<FormControl>
 										<Input
+											className='bg-neutral-800 focus-visible:outline-none focus-visible:ring-transparent'
 											{...field}
 											disabled={isPending}
 											placeholder='John Doe'
@@ -91,6 +92,7 @@ export const RegisterForm = () => {
 									<FormLabel>Email</FormLabel>
 									<FormControl>
 										<Input
+											className='bg-neutral-800 focus-visible:outline-none focus-visible:ring-transparent'
 											{...field}
 											disabled={isPending}
 											placeholder='john.doe@example.com'
@@ -109,6 +111,7 @@ export const RegisterForm = () => {
 									<FormLabel>Password</FormLabel>
 									<FormControl>
 										<Input
+											className='bg-neutral-800 focus-visible:outline-none focus-visible:ring-transparent'
 											{...field}
 											disabled={isPending}
 											placeholder='******'
@@ -125,7 +128,8 @@ export const RegisterForm = () => {
 					<Button
 						disabled={isPending}
 						type='submit'
-						className='w-full bg-black/80 hover:bg-black/60'>
+						variant={'outline'}
+						className='w-full '>
 						Create an account
 					</Button>
 				</form>

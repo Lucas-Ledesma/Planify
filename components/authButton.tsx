@@ -13,13 +13,13 @@ function AuthButton({ looged }: authButtonPorps) {
 	return (
 		<div>
 			{looged ? (
-				<Button size='sm' variant='outline' asChild>
+				<Button size='sm' variant='ghost' asChild>
 					<Link href={'/login'}>Login</Link>
 				</Button>
 			) : (
 				<Button
 					size='sm'
-					variant='outline'
+					variant='ghost'
 					onClick={() => signOut({ callbackUrl: '/' })}>
 					Logout
 				</Button>

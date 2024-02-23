@@ -17,14 +17,15 @@ import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
+	PopoverClose,
 } from '../ui/popover'
-import { PopoverClose } from '@radix-ui/react-popover'
 
 interface FormPopoverProps {
 	children: React.ReactNode
 	side?: 'left' | 'right' | 'top' | 'bottom'
 	align?: 'start' | 'center' | 'end'
 	sideOffset?: number
+	organizationId: string
 }
 
 export const FormPopover = ({
@@ -32,6 +33,7 @@ export const FormPopover = ({
 	side = 'bottom',
 	align,
 	sideOffset = 0,
+	organizationId,
 }: FormPopoverProps) => {
 	const proModal = useProModal()
 	const router = useRouter()
@@ -53,7 +55,7 @@ export const FormPopover = ({
 		const title = formData.get('title') as string
 		const image = formData.get('image') as string
 
-		execute({ title, image })
+		execute({ title, image, orgId: organizationId })
 	}
 
 	return (

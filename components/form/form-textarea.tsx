@@ -48,12 +48,12 @@ export const FormTextarea = forwardRef<
 		const { pending } = useFormStatus()
 
 		return (
-			<div className='space-y-2 w-full'>
+			<div className='space-y-2 w-full '>
 				<div className='space-y-1 w-full'>
 					{label ? (
 						<Label
 							htmlFor={id}
-							className='text-xs font-semibold text-neutral-700'>
+							className='text-xs font-semibold'>
 							{label}
 						</Label>
 					) : null}
@@ -68,7 +68,7 @@ export const FormTextarea = forwardRef<
 						id={id}
 						disabled={pending || disabled}
 						className={cn(
-							'resize-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm',
+							'resize-none bg-primary focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm',
 							className
 						)}
 						aria-describedby={`${id}-error`}
