@@ -4,12 +4,12 @@ import { revalidatePath } from 'next/cache'
 
 import { createSafeAction } from '@/lib/create-safe-action'
 
-import { auth } from '@/auth'
 import { InputType, ReturnType } from './type'
+import { auth } from '@/auth'
 import axios from 'axios'
-import { CopyList } from './schema'
+import { UpdateCard } from './schema'
 
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/list`
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/card`
 
 const handler = async (
 	data: InputType
@@ -22,25 +22,27 @@ const handler = async (
 		}
 	}
 
-	const { boardId, id } = data
-
-	let list
+	const { id, boardId, description, title } = data
+	let card
 
 	try {
-		const res = await axios.post(`${URL}`, {
-			id,
-			boardId,
-		})
+		const { data: updatedCard } = await axios.patch(
+			`${URL}/${id}`,
+			{ boardId, description, title }
+		)
 
-		list = res.data
+		card = updatedCard
 	} catch (error) {
 		return {
-			error: 'Failed to copy.',
+			error: 'Failed to update.',
 		}
 	}
 
 	revalidatePath(`/board/${boardId}`)
-	return { data: list }
+	return { data: card }
 }
 
-export const copyList = createSafeAction(CopyList, handler)
+export const updateCard = createSafeAction(
+	UpdateCard,
+	handler
+)

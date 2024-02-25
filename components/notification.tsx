@@ -1,7 +1,7 @@
 'use client'
 
 import { Bell, Check, X } from 'lucide-react'
-import { Button } from './ui/button'
+import { Button, buttonVariants } from './ui/button'
 import {
 	Popover,
 	PopoverContent,
@@ -92,18 +92,19 @@ const Notification = ({
 
 	return (
 		<Popover>
-			<PopoverTrigger disabled={!haveNotification}>
-				<Button
-					variant={'ghost'}
-					size={'icon'}
-					className='relative'>
-					<Bell className='size-6 text-neutral-600' />
-					{notifications?.length > 0 && (
-						<div className='absolute bg-red-500 size-4 rounded-md text-white left-4 top-1'>
-							{notifications?.length}
-						</div>
-					)}
-				</Button>
+			<PopoverTrigger
+				disabled={!haveNotification}
+				className={buttonVariants({
+					variant: 'ghost',
+					size: 'icon',
+					className: 'relative',
+				})}>
+				<Bell className='size-6 text-neutral-600' />
+				{notifications?.length > 0 && (
+					<div className='absolute bg-red-500 size-4 rounded-md text-white left-4 top-1'>
+						{notifications?.length}
+					</div>
+				)}
 			</PopoverTrigger>
 			<PopoverContent className='w-full flex justify-center items-center bg-primary-foreground'>
 				<div>

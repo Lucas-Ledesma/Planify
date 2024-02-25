@@ -43,12 +43,8 @@ const InviteForm = ({
 	return (
 		<Dialog>
 			<DialogTrigger className='w-full'>
-				<div className=' w-full hover:opacity-50 border-b bg-neutral-800 rounded-md'>
-					<th
-						scope='row'
-						className='px-6 py-4 justify-center flex items-center gap-2 font-medium  whitespace-nowrap '>
-						<Plus className='size-5' />
-					</th>
+				<div className=' w-full hover:opacity-50 border-b bg-neutral-800 rounded-md px-6 py-4 justify-center flex items-center gap-2 font-medium  whitespace-nowrap '>
+					<Plus className='size-5' />
 				</div>
 			</DialogTrigger>
 			<DialogContent className='bg-primary-foreground'>

@@ -1,6 +1,9 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import {
+	Button,
+	buttonVariants,
+} from '@/components/ui/button'
 import {
 	Popover,
 	PopoverContent,
@@ -44,14 +47,13 @@ function OrgSwitcher({
 
 	return (
 		<Popover>
-			<PopoverTrigger>
-				<Button
-					variant='outline'
-					size='sm'
-					className='p-1 pl-2'>
-					{currentOrg?.title || activeOrg?.title}
-					<ChevronsUpDown className='size-4 opacity-80 ml-2' />
-				</Button>
+			<PopoverTrigger
+				className={buttonVariants({
+					variant: 'outline',
+					size: 'sm',
+				})}>
+				{currentOrg?.title || activeOrg?.title}
+				<ChevronsUpDown className='size-4 opacity-80 ml-2' />
 			</PopoverTrigger>
 			<PopoverContent className='w-80 bg-primary-foreground'>
 				<div className='grid gap-4'>

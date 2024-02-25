@@ -7,9 +7,9 @@ import { createSafeAction } from '@/lib/create-safe-action'
 import { auth } from '@/auth'
 import { InputType, ReturnType } from './type'
 import axios from 'axios'
-import { CopyList } from './schema'
+import { CopyCard } from './schema'
 
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/list`
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/card`
 
 const handler = async (
 	data: InputType
@@ -24,7 +24,7 @@ const handler = async (
 
 	const { boardId, id } = data
 
-	let list
+	let card
 
 	try {
 		const res = await axios.post(`${URL}`, {
@@ -32,7 +32,7 @@ const handler = async (
 			boardId,
 		})
 
-		list = res.data
+		card = res.data
 	} catch (error) {
 		return {
 			error: 'Failed to copy.',
@@ -40,7 +40,7 @@ const handler = async (
 	}
 
 	revalidatePath(`/board/${boardId}`)
-	return { data: list }
+	return { data: card }
 }
 
-export const copyList = createSafeAction(CopyList, handler)
+export const copyCard = createSafeAction(CopyCard, handler)

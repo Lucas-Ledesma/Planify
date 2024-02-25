@@ -26,8 +26,8 @@ const BoardIdLayout = async ({
 }) => {
 	const board = await getBoards({ boardId: params.boardId })
 
-	if (!board) {
-		notFound()
+	if (!board || board.length === 0) {
+		return
 	}
 
 	const org = await getOrg({ orgId: board[0].orgId })

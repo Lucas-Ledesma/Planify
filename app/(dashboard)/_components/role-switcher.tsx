@@ -1,8 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import changeRole from '@/actions/changeRole'
-import { Button } from '@/components/ui/button'
+import {
+	Button,
+	buttonVariants,
+} from '@/components/ui/button'
 import {
 	Popover,
 	PopoverContent,
@@ -22,8 +25,13 @@ const RoleSwitcher = ({
 }) => {
 	const [currentUser, setCurrentUser] = useState(user)
 	const [isLoading, setIsLoading] = useState(false)
+	const [isMounted, setIsMounted] = useState(false)
 
-	console.log(isAdmin)
+	useEffect(() => {
+		setIsMounted(true)
+	}, [])
+
+	if (!isMounted) return
 
 	async function onClick(newRole: 'ADMIN' | 'GUEST') {
 		try {
@@ -43,15 +51,15 @@ const RoleSwitcher = ({
 
 	return (
 		<Popover>
-			<PopoverTrigger disabled={isLoading || !isAdmin}>
-				<Button
-					variant='outline'
-					size='sm'
-					disabled={isLoading || !isAdmin}
-					className='p-1 pl-2'>
-					{currentUser.role}
-					<ChevronsUpDown className='size-4 opacity-80 ml-2' />
-				</Button>
+			<PopoverTrigger
+				disabled={isLoading || !isAdmin}
+				className={buttonVariants({
+					variant: 'ghost',
+					size: 'sm',
+					className: 'px-0',
+				})}>
+				{currentUser.role}
+				<ChevronsUpDown className='size-4 opacity-80 ml-2' />
 			</PopoverTrigger>
 			<PopoverContent className='w-80'>
 				<div className='grid gap-4'>

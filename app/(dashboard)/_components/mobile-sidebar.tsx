@@ -8,11 +8,13 @@ import { useMobileSidebar } from '@/hooks/use-mobile-sidebar'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
 import Link from 'next/link'
-import SidebarAcordeon from './sidebar-acordion'
 import { Org } from '@/type'
 import Image from 'next/image'
 import localFont from 'next/font/local'
 import { cn } from '@/lib/utils'
+import { Accordion } from '@/components/ui/accordion'
+import NavItem from './navbar-item'
+import { Sidebar } from './sidebar'
 
 interface MobileSidebarProps {
 	organizations: Org[]
@@ -64,7 +66,7 @@ export const MobileSidebar = ({
 				<Menu className='h-4 w-4' />
 			</Button>
 			<Sheet open={isOpen} onOpenChange={onClose}>
-				<SheetContent side='left' className='p-2 pt-10'>
+				<SheetContent side='left' className='p-2 pt-14'>
 					<>
 						<Link href='/'>
 							<div className='fixed top-2 left-2 hover:opacity-75 transition items-center gap-x-2 flex md:hidden'>
@@ -83,21 +85,9 @@ export const MobileSidebar = ({
 								</p>
 							</div>
 						</Link>
-						<div className='pb-2 pt-2'>
-							<Button
-								size='sm'
-								asChild
-								className='flex justify-between items-center gap-x-2 p-1.5 text-neutral-700 rounded-md hover:bg-neutral-500/10 transition text-start no-underline hover:no-underline'
-								variant='ghost'>
-								<Link href='/organization/form'>
-									<span>Workspaces</span>
-									<Plus className='h-4 w-4' />
-								</Link>
-							</Button>
-						</div>
-						<SidebarAcordeon
+						<Sidebar
+							storageKey='t-sidebar-mobile-state'
 							organizations={organizations}
-							storageKey={storageKey}
 							activeOrganizationId={organizationId}
 						/>
 					</>

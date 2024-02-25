@@ -2,7 +2,10 @@
 
 import { deleteOrganization } from '@/actions/delete-org'
 import { FormSubmit } from '@/components/form/form-submit'
-import { Button } from '@/components/ui/button'
+import {
+	Button,
+	buttonVariants,
+} from '@/components/ui/button'
 import {
 	Dialog,
 	DialogContent,
@@ -50,8 +53,11 @@ const DeleteForm = ({
 
 	return (
 		<Dialog>
-			<DialogTrigger>
-				<Button variant={'destructive'}>Delete</Button>
+			<DialogTrigger
+				className={buttonVariants({
+					variant: 'destructive',
+				})}>
+				Delete
 			</DialogTrigger>
 			<DialogContent className='bg-primary-foreground'>
 				<DialogHeader>

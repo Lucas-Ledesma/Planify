@@ -1,26 +1,60 @@
+'use client'
+
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
-import SidebarAcordeon from './sidebar-acordion'
-import { auth } from '@/auth'
+import SidebarAcordion from './sidebar-acordion'
 import getOrg from '@/actions/getOrg'
+import { useEffect, useState } from 'react'
+import { Org } from '@/type'
+import { useSession } from 'next-auth/react'
+import NavItem from './navbar-item'
 
 interface SidebarProps {
 	storageKey?: string
 	activeOrganizationId: string
 }
 
-export const Sidebar = async ({
+export const Sidebar = ({
 	activeOrganizationId,
 	storageKey = 't-sidebar-state',
 }: SidebarProps) => {
-	const data = await auth()
+	const [isLoading, setIsLoading] = useState(true)
+	const [organizations, setOrganizations] = useState<Org[]>(
+		[]
+	)
+	const { data: session } = useSession()
 
-	const organizations = await getOrg({
-		userId: data?.user?.id,
-	})
+	useEffect(() => {
+		const fetchData = async () => {
+			setOrganizations([
+				{
+					id: '',
+					createdAt: '',
+					title: '',
+					usersFromOrg: [],
+				},
+			])
+
+			const orgsData = await getOrg({
+				userId: session?.user?.id,
+			})
+
+			setOrganizations(orgsData)
+			setIsLoading(false)
+		}
+
+		if (
+			organizations.length === 0 &&
+			session &&
+			session.user &&
+			session.user.id
+		) {
+			fetchData()
+		}
+	}, [session, organizations])
 
 	return (
 		<>
@@ -35,11 +69,19 @@ export const Sidebar = async ({
 				</Link>
 			</Button>
 
-			<SidebarAcordeon
-				organizations={organizations}
-				storageKey={storageKey}
-				activeOrganizationId={activeOrganizationId}
-			/>
+			{isLoading ? (
+				<div className='space-y-2'>
+					<NavItem.Skeleton />
+					<NavItem.Skeleton />
+					<NavItem.Skeleton />
+				</div>
+			) : (
+				<SidebarAcordion
+					activeOrganizationId={activeOrganizationId}
+					organizations={organizations}
+					storageKey={storageKey}
+				/>
+			)}
 		</>
 	)
 }

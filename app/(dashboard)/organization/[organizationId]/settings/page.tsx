@@ -7,10 +7,8 @@ import {
 import Image from 'next/image'
 import RoleSwitcher from '../../../_components/role-switcher'
 import { auth } from '@/auth'
-import SettingsForm from '../../../_components/settings-form'
 import getOrg from '@/actions/getOrg'
 import { redirect } from 'next/navigation'
-import { Plus } from 'lucide-react'
 import InviteForm from '@/app/(dashboard)/_components/invite-form'
 import DeleteForm from '@/app/(dashboard)/_components/delete-form'
 import { Separator } from '@/components/ui/separator'
@@ -70,7 +68,7 @@ const SettingsPage = async ({
 								{users.map((user) => {
 									return (
 										<tr className='border-b'>
-											<th
+											<td
 												scope='row'
 												className='px-6 py-4 items-center flex gap-2 font-medium t whitespace-nowrap d'>
 												<Image
@@ -80,7 +78,7 @@ const SettingsPage = async ({
 													height={30}
 												/>
 												{user.user.name}
-											</th>
+											</td>
 											<td className='px-6 py-4'>
 												{user.joined}
 											</td>

@@ -2,29 +2,37 @@
 
 import { Accordion } from '@/components/ui/accordion'
 import { Org } from '@/type'
-import { useLocalStorage } from 'usehooks-ts'
 import NavItem from './navbar-item'
+import { useLocalStorage } from 'usehooks-ts'
+import { useEffect, useState } from 'react'
 
-interface SidebarAcordeonProps {
+interface SidebarAcordionProps {
 	organizations: Org[]
-	storageKey: string
 	activeOrganizationId: string
+	storageKey: string
 }
 
-const SidebarAcordeon = ({
+const SidebarAcordion = ({
+	activeOrganizationId,
 	organizations,
 	storageKey,
-	activeOrganizationId,
-}: SidebarAcordeonProps) => {
+}: SidebarAcordionProps) => {
 	const [expanded, setExpanded] = useLocalStorage<
 		Record<string, any>
 	>(storageKey, {})
 
-	const onExpand = (id: string) => {
-		setExpanded((curr) => ({
-			...curr,
-			[id]: !expanded[id],
-		}))
+	const [isMounted, setIsMounted] = useState(false)
+
+	useEffect(() => {
+		setIsMounted(true)
+	}, [])
+
+	if (!isMounted) {
+		return
+	}
+
+	if (expanded === undefined || expanded === null) {
+		return
 	}
 
 	const defaultAccordionValue: string[] = Object.keys(
@@ -37,11 +45,17 @@ const SidebarAcordeon = ({
 		return acc
 	}, [])
 
+	const onExpand = (id: string) => {
+		setExpanded((curr) => ({
+			...curr,
+			[id]: !expanded[id],
+		}))
+	}
 	return (
 		<Accordion
 			type='multiple'
-			defaultValue={defaultAccordionValue}
-			className='space-y-2'>
+			className='space-y-2'
+			defaultValue={defaultAccordionValue}>
 			{organizations.map((organization) => {
 				return (
 					<NavItem
@@ -59,4 +73,4 @@ const SidebarAcordeon = ({
 	)
 }
 
-export default SidebarAcordeon
+export default SidebarAcordion

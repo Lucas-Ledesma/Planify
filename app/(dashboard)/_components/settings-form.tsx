@@ -45,7 +45,7 @@ const SettingsForm = ({
 					closeRef.current?.click()
 					push('/organization')
 				} else {
-					push(`/organization/${data.msg}`)
+					push(`/organi	zation/${data.msg}`)
 				}
 			},
 		}
