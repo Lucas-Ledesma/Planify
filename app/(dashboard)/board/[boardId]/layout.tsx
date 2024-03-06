@@ -1,9 +1,9 @@
 import { notFound, redirect } from 'next/navigation'
 
 import { BoardNavbar } from './_components/board-navbar'
-import getBoards from '@/actions/getBoards'
+import getBoards from '@/actions/get/getBoards'
 import Navbar from '../../_components/navbar'
-import getOrg from '@/actions/getOrg'
+import getOrg from '@/actions/get/getOrg'
 
 export async function generateMetadata({
 	params,

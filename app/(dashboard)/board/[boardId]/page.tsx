@@ -1,4 +1,4 @@
-import { getLists } from '@/actions/getLists'
+import { getLists } from '@/actions/get/getLists'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { ListContainer } from './_components/list-container'

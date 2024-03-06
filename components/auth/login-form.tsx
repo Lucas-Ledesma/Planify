@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 
 import CardWrapper from '@/components/auth/cardWrapper'
 import { FormError } from '@/components/form-error'
@@ -12,13 +11,6 @@ import { FormSubmit } from '../form/form-submit'
 import { loginUser } from '@/actions/login-user'
 
 export const LoginForm = () => {
-	const searchParams = useSearchParams()
-	const callbackUrl = searchParams.get('callbackUrl')
-	const urlError =
-		searchParams.get('error') === 'OAuthAccountNotLinked'
-			? 'Email already in use with different provider!'
-			: ''
-
 	const [error, setError] = useState<string>('')
 	const [success, setSuccess] = useState<string>('')
 
@@ -66,7 +58,7 @@ export const LoginForm = () => {
 						type='password'
 					/>
 				</div>
-				<FormError message={error || urlError} />
+				<FormError message={error} />
 				<FormSuccess message={success} />
 				<FormSubmit variant='outline' className='w-full '>
 					Login

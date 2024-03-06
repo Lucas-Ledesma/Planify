@@ -1,106 +1,94 @@
 'use client'
 
 import { Bell, Check, X } from 'lucide-react'
-import { Button, buttonVariants } from './ui/button'
+import { buttonVariants } from './ui/button'
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from './ui/popover'
 import { Separator } from './ui/separator'
-import getNoification from '@/actions/getNotification'
 import { useEffect, useState } from 'react'
 import { Notification } from '@/type'
-import inviteUser from '@/actions/inviteUser'
-import deleteNotificarion from '@/actions/deleteNotification'
-import { useRouter } from 'next/navigation'
+import { FormSubmit } from './form/form-submit'
+import getNoification from '@/actions/get/getNotification'
+import { useAction } from '@/hooks/use-actions'
+import { deleteNotification } from '@/actions/delete-notification'
+import { inviteUser } from '@/actions/invite-user'
+import { useQuery } from '@tanstack/react-query'
 
-const Notification = ({
-	id,
-}: {
-	id: string | undefined
-}) => {
-	const [isLoading, setIsLoading] = useState(false)
+interface NotificationProps {
+	id: string
+}
+
+const Notification = ({ id }: NotificationProps) => {
 	const [notifications, setNotification] = useState<
 		Notification[] | []
 	>([])
 
+	const { execute: deleteExecute } = useAction(
+		deleteNotification
+	)
+
+	const { execute: inviteExecute } = useAction(inviteUser)
+
 	const [isMounted, setIsMounted] = useState(false)
 
-	const router = useRouter()
+	const { data } = useQuery({
+		queryKey: ['notification', 'notificationFetch'],
+		queryFn: () => getNoification(id),
+	})
 
 	useEffect(() => {
 		setIsMounted(true)
-		async function fetchData() {
-			try {
-				const notifications = await getNoification(id)
-				setNotification(notifications)
-			} catch (error) {
-				console.error('Error fetching notification:', error)
-			}
+		if (data) {
+			setNotification(data)
 		}
-
-		fetchData()
-	}, [])
+	}, [data])
 
 	if (!isMounted) {
 		return null
 	}
 
-	const onClick = async (
-		action: string,
-		notification: Notification
-	) => {
+	const onInvite = async (notification: Notification) => {
 		const { receiver, sender, organization } = notification
-		if (action === 'invite' && organization.id) {
-			try {
-				setIsLoading(true)
-				await inviteUser(
-					receiver.email,
-					organization.id,
-					sender.id
-				)
-				setNotification((prevNotifications) =>
-					prevNotifications.filter(
-						(notif) => notif.id !== notification.id
-					)
-				)
-				router.refresh()
-			} catch (error) {
-				console.log(error)
-			} finally {
-				setIsLoading(false)
-			}
-		}
 
-		try {
-			setIsLoading(true)
-			await deleteNotificarion(notification.id)
-			setNotification((prevNotifications) =>
-				prevNotifications.filter(
-					(notif) => notif.id !== notification.id
-				)
+		inviteExecute({
+			email: receiver.email,
+			orgId: organization.id,
+			id: sender.id,
+		})
+
+		setNotification((prevNotifications) =>
+			prevNotifications.filter(
+				(notif) => notif.id !== notification.id
 			)
-		} catch (error) {
-			console.log(error)
-		} finally {
-			setIsLoading(false)
-		}
+		)
 	}
 
-	const haveNotification = notifications?.length > 0
+	const onDelete = async (notification: Notification) => {
+		deleteExecute({
+			id: notification.id,
+		})
+
+		setNotification((prevNotifications) =>
+			prevNotifications.filter(
+				(notif) => notif.id !== notification.id
+			)
+		)
+	}
 
 	return (
 		<Popover>
 			<PopoverTrigger
-				disabled={!haveNotification}
+				disabled={!notifications}
 				className={buttonVariants({
 					variant: 'ghost',
 					size: 'icon',
 					className: 'relative',
 				})}>
 				<Bell className='size-6 text-neutral-600' />
-				{notifications?.length > 0 && (
+				{notifications && notifications?.length > 0 && (
 					<div className='absolute bg-red-500 size-4 rounded-md text-white left-4 top-1'>
 						{notifications?.length}
 					</div>
@@ -115,31 +103,32 @@ const Notification = ({
 							</h4>
 							<Separator />
 						</div>
-						{notifications.map((notification) => {
+						{notifications?.map((notification) => {
 							return (
-								<div className='flex gap-2 items-center'>
+								<div
+									className='flex gap-2 items-center'
+									key={notification.id}>
 									<p className='text-sm text-muted-foreground'>
 										{notification.sender.name} invitation to
 										join {notification.organization.title}
 									</p>
-									<Button
-										variant={'outline'}
-										disabled={isLoading}
-										size={'sm'}
-										onClick={() =>
-											onClick('invite', notification)
-										}>
-										<Check className='size-3' />
-									</Button>
-									<Button
-										onClick={() =>
-											onClick('delete', notification)
-										}
-										variant={'destructive'}
-										disabled={isLoading}
-										size={'sm'}>
-										<X className='size-3' />
-									</Button>
+									<form
+										action={() => onInvite(notification)}>
+										<FormSubmit
+											variant={'outline'}
+											size={'sm'}>
+											<Check className='size-3' />
+										</FormSubmit>
+									</form>
+
+									<form
+										action={() => onDelete(notification)}>
+										<FormSubmit
+											variant={'destructive'}
+											size={'sm'}>
+											<X className='size-3' />
+										</FormSubmit>
+									</form>
 								</div>
 							)
 						})}

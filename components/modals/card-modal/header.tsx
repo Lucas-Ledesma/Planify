@@ -11,6 +11,7 @@ import { FormInput } from '@/components/form/form-input'
 import { Card } from '@/type'
 import { useAction } from '@/hooks/use-actions'
 import { updateCard } from '@/actions/update-card'
+import { Button } from '@/components/ui/button'
 
 interface HeaderProps {
 	data: Card
@@ -74,6 +75,7 @@ export const Header = ({ data }: HeaderProps) => {
 						className='font-semibold text-xl px-1 bg-transparent focus-visible:outline-none focus-visible:ring-transparent border-none text-primary relative -left-1.5 w-[95%] focus-visible:bg-neutral-800 mb-0.5 truncate'
 					/>
 				</form>
+
 				<p className='text-sm text-muted-foreground'>
 					in list{' '}
 					<span className='underline underline-offset-4'>
@@ -88,10 +90,10 @@ export const Header = ({ data }: HeaderProps) => {
 Header.Skeleton = function HeaderSkeleton() {
 	return (
 		<div className='flex items-start gap-x-3 mb-6'>
-			<Skeleton className='h-6 w-6 mt-1 bg-neutral-200' />
+			<Skeleton className='h-6 w-6 mt-1 bg-neutral-800' />
 			<div>
-				<Skeleton className='w-24 h-6 mb-1 bg-neutral-200' />
-				<Skeleton className='w-12 h-4 bg-neutral-200' />
+				<Skeleton className='w-24 h-6 mb-1 bg-neutral-800' />
+				<Skeleton className='w-12 h-4 bg-neutral-800' />
 			</div>
 		</div>
 	)

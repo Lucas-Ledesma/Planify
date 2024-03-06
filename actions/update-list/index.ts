@@ -8,6 +8,8 @@ import { InputType, ReturnType } from './type'
 import { auth } from '@/auth'
 import axios from 'axios'
 import { UpdateList } from './schema'
+import getOrg from '../get/getOrg'
+import { createAuditLog } from '@/lib/create-audit-log'
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/list`
 
@@ -32,13 +34,24 @@ const handler = async (
 		)
 
 		list = updatedList
-		revalidatePath(`/board/${boardId}`)
-		return { data: list }
+
+		const org = await getOrg({ boardId })
+
+		await createAuditLog({
+			action: 'UPDATE',
+			entityId: list.id,
+			entityTitle: list.title,
+			entityType: 'LIST',
+			orgId: org[0].id,
+		})
 	} catch (error) {
 		return {
 			error: 'Failed to update.',
 		}
 	}
+
+	revalidatePath(`/board/${boardId}`)
+	return { data: list }
 }
 
 export const updateList = createSafeAction(

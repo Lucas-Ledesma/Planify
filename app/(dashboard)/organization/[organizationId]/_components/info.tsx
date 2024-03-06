@@ -1,7 +1,8 @@
 import { CreditCard } from 'lucide-react'
 
 import { Skeleton } from '@/components/ui/skeleton'
-import getOrg from '@/actions/getOrg'
+import getOrg from '@/actions/get/getOrg'
+import { cn } from '@/lib/utils'
 
 interface InfoProps {
 	isPro: boolean
@@ -22,9 +23,18 @@ export const Info = async ({
 				<p className='font-semibold text-xl'>
 					{organization[0]?.title}
 				</p>
-				<div className='flex items-center text-xs text-muted-foreground'>
-					<CreditCard className='h-3 w-3 mr-1' />
-					{isPro ? 'Pro' : 'Free'}
+				<div className='flex items-center text-sm text-muted-foreground'>
+					<CreditCard
+						className={cn(
+							'h-3 w-3 mr-1',
+							isPro && 'text-[#efb810]'
+						)}
+					/>
+					{isPro ? (
+						<span className='text-[#efb810]'>Pro</span>
+					) : (
+						<span>Free</span>
+					)}
 				</div>
 			</div>
 		</div>

@@ -85,6 +85,7 @@ export const FormPicker = ({
 							type='radio'
 							id={id}
 							name={id}
+							readOnly
 							className='hidden'
 							checked={selectedImageId === image.id}
 							disabled={pending}
@@ -95,6 +96,7 @@ export const FormPicker = ({
 							alt='Unsplash image'
 							className='object-cover rounded-sm'
 							fill
+							sizes='33vw'
 						/>
 						{selectedImageId === image.id && (
 							<div className='absolute inset-y-0 h-full w-full bg-black/30 flex items-center justify-center'>

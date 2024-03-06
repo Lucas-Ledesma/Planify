@@ -7,11 +7,12 @@ import {
 import Image from 'next/image'
 import RoleSwitcher from '../../../_components/role-switcher'
 import { auth } from '@/auth'
-import getOrg from '@/actions/getOrg'
+import getOrg from '@/actions/get/getOrg'
 import { redirect } from 'next/navigation'
 import InviteForm from '@/app/(dashboard)/_components/invite-form'
 import DeleteForm from '@/app/(dashboard)/_components/delete-form'
 import { Separator } from '@/components/ui/separator'
+import LeaveForm from '@/app/(dashboard)/_components/leave-form'
 
 const SettingsPage = async ({
 	params,
@@ -67,7 +68,9 @@ const SettingsPage = async ({
 							<tbody>
 								{users.map((user) => {
 									return (
-										<tr className='border-b'>
+										<tr
+											className='border-b'
+											key={user.userId}>
 											<td
 												scope='row'
 												className='px-6 py-4 items-center flex gap-2 font-medium t whitespace-nowrap d'>
@@ -108,7 +111,7 @@ const SettingsPage = async ({
 			</div>
 
 			<CardFooter className='flex justify-between w-full'>
-				{isAdmin && (
+				{isAdmin ? (
 					<footer className='w-full flex flex-col gap-4'>
 						<div className='flex items-center gap-4 text-rose-500/70'>
 							<div className='border-t w-[45%] bg-rose-500/70 h-1/2'></div>
@@ -119,6 +122,22 @@ const SettingsPage = async ({
 						</div>
 						<div>
 							<DeleteForm
+								organizationId={params.organizationId}
+								userId={session?.user?.id}
+							/>
+						</div>
+					</footer>
+				) : (
+					<footer className='w-full flex flex-col gap-4'>
+						<div className='flex items-center gap-4 text-rose-500/70'>
+							<div className='border-t w-[45%] bg-rose-500/70 h-1/2'></div>
+							<span className='text-sm w-[12%]  text-center'>
+								danger zone
+							</span>
+							<div className='border-t w-[45%] bg-rose-500/70 h-1/2'></div>
+						</div>
+						<div>
+							<LeaveForm
 								organizationId={params.organizationId}
 								userId={session?.user?.id}
 							/>

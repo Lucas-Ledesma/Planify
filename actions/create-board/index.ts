@@ -7,6 +7,13 @@ import { CreateBoard } from './schema'
 import { InputType, ReturnType } from './type'
 import { auth } from '@/auth'
 import axios from 'axios'
+import { createAuditLog } from '@/lib/create-audit-log'
+import {
+	hasAvailableCount,
+	incrementAvailableCount,
+} from '@/lib/org-limit'
+import { checkSubscription } from '@/lib/subscription'
+import { revalidatePath } from 'next/cache'
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/board`
 
@@ -22,6 +29,16 @@ const handler = async (
 	}
 
 	const { title, image, orgId } = data
+
+	const canCreate = await hasAvailableCount({ orgId })
+	const isPro = await checkSubscription({ orgId })
+
+	if (!canCreate && !isPro) {
+		return {
+			error:
+				'You have reached you limit of free boards. Please upgrade to create more',
+		}
+	}
 
 	const [
 		imageId,
@@ -57,12 +74,24 @@ const handler = async (
 		})
 
 		board = res.data
+
+		if (!isPro) {
+			await incrementAvailableCount({ orgId })
+		}
+
+		await createAuditLog({
+			action: 'CREATE',
+			entityId: res.data.id,
+			entityTitle: res.data.title,
+			entityType: 'BOARD',
+			orgId,
+		})
 	} catch (error) {
 		return {
 			error: 'Failed to create.',
 		}
 	}
-
+	revalidatePath(`/organization/${orgId}`)
 	return { data: board }
 }
 

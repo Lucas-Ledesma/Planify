@@ -8,8 +8,10 @@ import { auth } from '@/auth'
 import { InputType, ReturnType } from './type'
 import axios from 'axios'
 import { CopyCard } from './schema'
+import { createAuditLog } from '@/lib/create-audit-log'
+import getOrg from '../get/getOrg'
 
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/card`
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/card/copy`
 
 const handler = async (
 	data: InputType
@@ -22,7 +24,7 @@ const handler = async (
 		}
 	}
 
-	const { boardId, id } = data
+	const { boardId, id, title } = data
 
 	let card
 
@@ -33,6 +35,16 @@ const handler = async (
 		})
 
 		card = res.data
+
+		const org = await getOrg({ boardId })
+
+		await createAuditLog({
+			action: 'CREATE',
+			entityId: res.data.id,
+			entityTitle: res.data.title,
+			entityType: 'CARD',
+			orgId: org[0].id,
+		})
 	} catch (error) {
 		return {
 			error: 'Failed to copy.',

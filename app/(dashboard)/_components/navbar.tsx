@@ -4,11 +4,11 @@ import { Plus } from 'lucide-react'
 import OrgSwitcher from './orgSwitcher'
 import AuthButton from '@/components/authButton'
 import { auth } from '@/auth'
-import { redirect } from 'next/navigation'
+import { redirect, useParams } from 'next/navigation'
 import Link from 'next/link'
 import { MobileSidebar } from './mobile-sidebar'
 import Notification from '@/components/notification'
-import getOrg from '@/actions/getOrg'
+import getOrg from '@/actions/get/getOrg'
 import { Org } from '@/type'
 
 interface NavbarProps {
@@ -17,6 +17,7 @@ interface NavbarProps {
 
 async function Navbar({ activeOrg }: NavbarProps) {
 	const session = await auth()
+
 	if (!session || !session.user || !session.user.id) {
 		return redirect('/')
 	}
@@ -39,6 +40,7 @@ async function Navbar({ activeOrg }: NavbarProps) {
 				<Button
 					asChild
 					size={'sm'}
+					variant={'outline'}
 					className='rounded-sm flex md:hidden items-center'>
 					<Link href={'/organization/form'}>
 						<Plus className='size-4 items-center' />
@@ -47,7 +49,7 @@ async function Navbar({ activeOrg }: NavbarProps) {
 			</div>
 			<div className='ml-auto flex items-center gap-x-2'>
 				{session?.user?.id && (
-					<Notification id={session?.user?.id} />
+					<Notification id={session.user.id} />
 				)}
 				<OrgSwitcher orgs={orgs} activeOrg={activeOrg} />
 				<AuthButton looged={!session} />

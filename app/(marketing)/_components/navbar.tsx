@@ -2,7 +2,6 @@
 
 import AuthButton from '@/components/authButton'
 import { Logo } from '@/components/logo'
-import Notification from '@/components/notification'
 import { Button } from '@/components/ui/button'
 import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'

@@ -20,10 +20,12 @@ export interface Org {
 
 export interface User {
 	id: string
+	providerId: string
+	password?: string
+	name: string
 	email: string
 	image: string
-	name: string
-	password?: string
+	invitedUser: InvitedUser[]
 }
 
 export interface Notification {
@@ -86,4 +88,25 @@ export interface Card {
 	list: List
 	createdAt: string
 	updatedAt: string
+}
+
+export interface AuditLog {
+	id: string
+	orgId: string
+	action: 'CREATE' | 'DELETE' | 'UPDATE'
+	entityId: string
+	entityType: 'CARD' | 'LIST' | 'BOARD'
+	entityTitle: string
+	userId: string
+	userImage: string
+	userName: string
+	createdAt: Date
+	updatedAt: Date
+}
+
+interface InvitedUser {
+	userId: string
+	orgId: string
+	role: string
+	joined: string
 }

@@ -8,6 +8,8 @@ import { InputType, ReturnType } from './type'
 import { auth } from '@/auth'
 import axios from 'axios'
 import { UpdateBoard } from './schema'
+import getOrg from '../get/getOrg'
+import { createAuditLog } from '@/lib/create-audit-log'
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/board`
 
@@ -33,6 +35,16 @@ const handler = async (
 		})
 
 		board = data
+
+		const org = await getOrg({ boardId: id })
+
+		await createAuditLog({
+			action: 'UPDATE',
+			entityId: board.id,
+			entityTitle: board.title,
+			entityType: 'BOARD',
+			orgId: org[0].id,
+		})
 	} catch (error) {
 		return {
 			error: 'Failed to update.',

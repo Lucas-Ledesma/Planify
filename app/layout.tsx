@@ -33,9 +33,9 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={inter.className}>
 				<QueryProvider>
-					<Noise />
 					<ModalProvider />
 					<Toaster />
+					<Noise />
 					<Provider>{children}</Provider>
 				</QueryProvider>
 			</body>

@@ -4,7 +4,7 @@ import OrgCard from '../_components/orgCard'
 import { useEffect, useState } from 'react'
 import { Org } from '@/type'
 import { useSession } from 'next-auth/react'
-import getOrg from '@/actions/getOrg'
+import getOrg from '@/actions/get/getOrg'
 
 const OrgPage = () => {
 	const [orgs, setOrgs] = useState<Org[] | []>([])

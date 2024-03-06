@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth'
 import authConfig from './auth.config'
-import getUserByEmail from './actions/getUserByEmail'
+import getUserByEmail from './actions/get/getUserByEmail'
 import createUser from './actions/createUser'
 
 export const {
@@ -10,6 +10,7 @@ export const {
 	auth,
 } = NextAuth({
 	...authConfig,
+	session: { strategy: 'jwt' },
 	callbacks: {
 		async signIn({ user, account }) {
 			if (!user.email || !user.name || !user.image)
@@ -31,7 +32,7 @@ export const {
 
 			return true
 		},
-		async session({ session, token }) {
+		async session({ session, token }: any) {
 			if (token && session.user) {
 				session.user.id = token.id
 			}

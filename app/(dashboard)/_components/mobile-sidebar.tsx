@@ -1,6 +1,6 @@
 'use client'
 
-import { Menu, Plus } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
@@ -78,7 +78,7 @@ export const MobileSidebar = ({
 								/>
 								<p
 									className={cn(
-										'text-lg text-neutral-700 items-center pt-1',
+										'text-lg  items-center pt-1',
 										headingFont.className
 									)}>
 									Planify
@@ -87,7 +87,6 @@ export const MobileSidebar = ({
 						</Link>
 						<Sidebar
 							storageKey='t-sidebar-mobile-state'
-							organizations={organizations}
 							activeOrganizationId={organizationId}
 						/>
 					</>

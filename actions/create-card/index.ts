@@ -8,6 +8,8 @@ import { auth } from '@/auth'
 import { InputType, ReturnType } from './type'
 import axios from 'axios'
 import { CreateCard } from './schema'
+import { createAuditLog } from '@/lib/create-audit-log'
+import getOrg from '../get/getOrg'
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/card`
 
@@ -33,9 +35,17 @@ const handler = async (
 			listId,
 		})
 
-		console.log(res.data)
-
 		card = res.data
+
+		const org = await getOrg({ boardId })
+
+		await createAuditLog({
+			action: 'CREATE',
+			entityId: res.data.id,
+			entityTitle: res.data.title,
+			entityType: 'CARD',
+			orgId: org[0].id,
+		})
 	} catch (error) {
 		console.log(error)
 

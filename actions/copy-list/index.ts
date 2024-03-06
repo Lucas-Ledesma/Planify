@@ -8,8 +8,10 @@ import { auth } from '@/auth'
 import { InputType, ReturnType } from './type'
 import axios from 'axios'
 import { CopyList } from './schema'
+import { createAuditLog } from '@/lib/create-audit-log'
+import getOrg from '../get/getOrg'
 
-const URL = `${process.env.NEXT_PUBLIC_API_URL}/list`
+const URL = `${process.env.NEXT_PUBLIC_API_URL}/list/copy`
 
 const handler = async (
 	data: InputType
@@ -33,6 +35,16 @@ const handler = async (
 		})
 
 		list = res.data
+
+		const org = await getOrg({ boardId })
+
+		await createAuditLog({
+			action: 'CREATE',
+			entityId: list.id,
+			entityTitle: list.title,
+			entityType: 'LIST',
+			orgId: org[0].id,
+		})
 	} catch (error) {
 		return {
 			error: 'Failed to copy.',

@@ -8,6 +8,8 @@ import { DeleteList } from './schema'
 import { InputType, ReturnType } from './type'
 import { auth } from '@/auth'
 import axios from 'axios'
+import getOrg from '../get/getOrg'
+import { createAuditLog } from '@/lib/create-audit-log'
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/list`
 
@@ -29,6 +31,16 @@ const handler = async (
 		const { data: deleteList } = await axios.delete(
 			`${URL}/${id}`
 		)
+
+		const org = await getOrg({ boardId: id })
+
+		await createAuditLog({
+			action: 'DELETE',
+			entityId: deleteList.id,
+			entityTitle: deleteList.title,
+			entityType: 'LIST',
+			orgId: org[0].id,
+		})
 
 		data = deleteList
 		revalidatePath(`/board/${boardId}`)

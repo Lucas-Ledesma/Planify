@@ -6,6 +6,8 @@ import axios from 'axios'
 import { createSafeAction } from '@/lib/create-safe-action'
 import { revalidatePath } from 'next/cache'
 import { DeleteCard } from './schema'
+import getOrg from '../get/getOrg'
+import { createAuditLog } from '@/lib/create-audit-log'
 
 const URL = `${process.env.NEXT_PUBLIC_API_URL}/card`
 
@@ -26,6 +28,16 @@ const handler = async (
 		const { data: deleteCard } = await axios.delete(
 			`${URL}/${id}`
 		)
+
+		const org = await getOrg({ boardId: id })
+
+		await createAuditLog({
+			action: 'DELETE',
+			entityId: deleteCard.id,
+			entityTitle: deleteCard.title,
+			entityType: 'CARD',
+			orgId: org[0].id,
+		})
 
 		revalidatePath(`/organization/${boardId}`)
 		return { data: deleteCard }

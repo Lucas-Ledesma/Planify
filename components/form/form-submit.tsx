@@ -17,6 +17,7 @@ interface FormSubmitProps {
 		| 'ghost'
 		| 'link'
 		| 'primary'
+	size?: 'default' | 'sm' | 'lg' | 'icon' | 'inline'
 }
 
 export const FormSubmit = ({
@@ -24,6 +25,7 @@ export const FormSubmit = ({
 	disabled,
 	className,
 	variant,
+	size,
 }: FormSubmitProps) => {
 	const { pending } = useFormStatus()
 
@@ -32,6 +34,7 @@ export const FormSubmit = ({
 			disabled={pending || disabled}
 			type='submit'
 			variant={variant}
+			size={size}
 			className={cn(className)}>
 			{children}
 		</Button>
